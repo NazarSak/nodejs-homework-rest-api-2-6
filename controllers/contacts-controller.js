@@ -46,6 +46,7 @@ const postReq = async (req, res, next) => {
       res.status(201).json(add);
     } catch (error) {
       next(error);
+      console.log("change in 3 branch");
     }
   }
 
