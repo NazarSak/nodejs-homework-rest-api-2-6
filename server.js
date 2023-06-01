@@ -1,12 +1,8 @@
 const app = require("./app");
 
 const mongoose = require("mongoose");
-const DB_HOST =
-  "mongodb+srv://Nazar:f3idUlg2XNWWPHnW@cluster0.hhlsnkj.mongodb.net/db-contacts?retryWrites=true&w=majority";
 
-// app.listen(3000, () => {
-//   console.log("Server running. Use our API on port: 3000")
-// })
+const {DB_HOST} = require("./config")
 
 mongoose
   .connect(DB_HOST)
