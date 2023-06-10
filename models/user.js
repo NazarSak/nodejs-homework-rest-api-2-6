@@ -4,7 +4,6 @@ const Joi = require("joi");
 
 const { HandleMongoose } = require("../helpers");
 
-// const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+*(\.\w{2,3})+$/;
 
 const userSchema = new Schema(
   {
@@ -36,7 +35,7 @@ const registerShema = Joi.object({
 
 const loginShema = Joi.object({
     email: Joi.string().required(),
-    subscription: Joi.string().required(),
+    password: Joi.string().required(),
   });
 
   const schemas = {

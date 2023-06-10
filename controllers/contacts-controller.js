@@ -13,12 +13,16 @@ const addSchema = Joi.object({
 
 const favoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
-})
+});
 
 const getAllReq = async (req, res, next) => {
   try {
-    const all = await Contact.find();
+
+    const { _id: owner } = req.user;
+
+    const all = await Contact.find({owner});
     res.json(all);
+
   } catch (error) {
     next(error);
   }
@@ -44,7 +48,8 @@ const postReq = async (req, res, next) => {
     if (error) {
       throw HttpErrors(400, error.message);
     }
-    const add = await Contact.create(req.body);
+    const { _id: owner } = req.user;
+    const add = await Contact.create({ ...req.body, owner });
     res.status(201).json(add);
   } catch (error) {
     next(error);
@@ -52,21 +57,21 @@ const postReq = async (req, res, next) => {
 };
 
 const deleteReq = async (req, res, next) => {
-    try {
-      const { contactId } = req.params;
-      const remove = await Contact.findByIdAndRemove(contactId);
+  try {
+    const { contactId } = req.params;
+    const remove = await Contact.findByIdAndRemove(contactId);
 
-      if (!remove) {
-        throw HttpErrors(400, "Not found");
-      }
-
-      res.json({
-        message: "Delete success",
-      });
-    } catch (error) {
-      next(error);
+    if (!remove) {
+      throw HttpErrors(400, "Not found");
     }
+
+    res.json({
+      message: "Delete success",
+    });
+  } catch (error) {
+    next(error);
   }
+};
 
 const putReq = async (req, res, next) => {
   try {
