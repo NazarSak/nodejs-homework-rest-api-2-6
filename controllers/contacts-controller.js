@@ -32,6 +32,7 @@ const getByIdReq = async (req, res, next) => {
     if (!byId) {
       throw HttpErrors(404, "Not found");
     }
+
     res.json(byId);
   } catch (error) {
     next(error);
@@ -78,6 +79,7 @@ const putReq = async (req, res, next) => {
     const result = await Contact.findByIdAndUpdate(contactId, req.body, {
       new: true,
     });
+
     if (!result) {
       throw HttpErrors(404, "Not found");
     }
