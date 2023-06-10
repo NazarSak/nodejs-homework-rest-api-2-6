@@ -17,12 +17,14 @@ const favoriteSchema = Joi.object({
 
 const getAllReq = async (req, res, next) => {
   try {
-
     const { _id: owner } = req.user;
-
-    const all = await Contact.find({owner});
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+    const all = await Contact.find({ owner }, "-createdAt -updatedAT", {
+      skip,
+      limit,
+    }).populate("owner", "subscription email");
     res.json(all);
-
   } catch (error) {
     next(error);
   }

@@ -4,24 +4,25 @@ const Joi = require("joi");
 
 const { HandleMongoose } = require("../helpers");
 
-
 const userSchema = new Schema(
   {
     password: {
-        type: String,
-        required: [true, 'Set password for user'],
-      },
-      email: {
-        type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-      },
-      subscription: {
-        type: String,
-        enum: ["starter", "pro", "business"],
-        default: "starter"
-      },
+      type: String,
+      required: [true, "Set password for user"],
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+    },
+    subscription: {
+      type: String,
+      enum: ["starter", "pro", "business"],
+      default: "starter",
+    },
+   token:String
   },
+
   { versionKey: false, timeseries: true }
 );
 
@@ -34,18 +35,18 @@ const registerShema = Joi.object({
 });
 
 const loginShema = Joi.object({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
-  });
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});
 
-  const schemas = {
-    registerShema,
-    loginShema,
-  }
+const schemas = {
+  registerShema,
+  loginShema,
+};
 
-  const User = model("user", userSchema)
+const User = model("user", userSchema);
 
-  module.exports = {
-    User, 
-    schemas,
-  }
+module.exports = {
+  User,
+  schemas,
+};
