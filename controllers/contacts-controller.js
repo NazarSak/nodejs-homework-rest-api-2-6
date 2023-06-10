@@ -15,6 +15,10 @@ const favoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
+// const subscriptionSchema = Joi.object({
+//   subscription: Joi.string.required(),
+// });
+
 const getAllReq = async (req, res, next) => {
   try {
     const { _id: owner } = req.user;
@@ -94,7 +98,7 @@ const putReq = async (req, res, next) => {
   }
 };
 
-const patchReq = async (req, res, next) => {
+const patchReqFavorite = async (req, res, next) => {
   try {
     const { error } = favoriteSchema.validate(req.body);
     if (error) {
@@ -113,11 +117,31 @@ const patchReq = async (req, res, next) => {
   }
 };
 
+// const patchReqSubscription = async (req, res, next) => {
+//   try {
+//     const { error } = subscriptionSchema.validate(req.body);
+//     if (error) {
+//       throw HttpErrors(400, error.message);
+//     }
+//     const { contactId } = req.params;
+//     const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+//       new: true,
+//     });
+//     if (!result) {
+//       throw HttpErrors(404, "Not found");
+//     }
+//     res.json(result);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 module.exports = {
   getAllReq,
   getByIdReq,
   postReq,
   deleteReq,
   putReq,
-  patchReq,
+  patchReqFavorite,
+  // patchReqSubscription,
 };
