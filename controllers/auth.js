@@ -1,11 +1,17 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const Joi = require("joi");
+
 const { User } = require("../models/user");
 
 const { HttpErrors } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
+
+const subscriptionSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
 
 const register = async (req, res, next) => {
   try {
@@ -89,9 +95,31 @@ const logout = async (req, res, next) => {
   }
 };
 
+const patchReqSubscription = async (req, res, next) => {
+  try {
+    const { subscription } = req.body;
+
+    const { _id } = req.user;
+
+    await User.findByIdAndUpdate(_id, req.body, { new: true });
+
+    const { error } = subscriptionSchema.validate(req.body);
+    if (error) {
+      throw HttpErrors(400, error.message);
+    }
+
+    res.json({
+      subscription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   current,
   logout,
+  patchReqSubscription,
 };

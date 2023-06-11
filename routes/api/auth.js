@@ -16,6 +16,6 @@ router.get("/current", authenticate, ctrlAuth.current)
 
 router.post("/logout", authenticate,ctrlAuth.logout)
 
-
+router.patch("/users", authenticate,  ctrlAuth.patchReqSubscription )
 
 module.exports = router

@@ -18,6 +18,6 @@ router.put("/:contactId", authenticate, isValidId, contactsController.putReq);
 
 router.patch("/:contactId/favorite", authenticate, isValidId, contactsController.patchReqFavorite);
 
-// router.patch("/:contactId/subscription", authenticate, isValidId, contactsController.patchReqSubscription )
+
 
 module.exports = router;
