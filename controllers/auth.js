@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
-// const Jimp = require("jimp");
+const Jimp = require("jimp");
 
 const Joi = require("joi");
 
@@ -135,8 +135,16 @@ const patchAvatar = async (req, res) => {
   const resultUpload = path.join(avatarDes, filename);
   await fs.rename(tmpUpload, resultUpload);
   const avatarURL = path.join("avatars", filename);
- 
+
   await User.findByIdAndUpdate(_id, { avatarURL });
+
+Jimp.read(`${avatarDes}/${filename}`,(err,fileAvatar) => {
+  if (err) throw err
+  fileAvatar
+  .cover(250,250)
+  .write(`${avatarDes}/${filename}`) 
+})
+
   res.json({
     avatarURL,
   });
