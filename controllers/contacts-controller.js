@@ -4,12 +4,33 @@ const Contact = require("../models/contact");
 
 const { HttpErrors } = require("../helpers");
 
+// const addSchema = Joi.object({
+//   name: Joi.string().required(),
+//   phone: Joi.number().required(),
+//   email: Joi.string().required(),
+//   favorite: Joi.boolean().required(),
+// });
+
+
 const addSchema = Joi.object({
-  name: Joi.string().required(),
-  phone: Joi.number().required(),
-  email: Joi.string().required(),
-  favorite: Joi.boolean(),
+  name: Joi.string().required().messages({
+    "any.required": `"name" don't be upseeet`,
+    "string.empty": `"name" cannot be an empty field`,
+  }),
+  phone: Joi.number().required().messages({
+    "any.required": `"phone" don't be upseeet`,
+    "string.empty": `"phone" cannot be an empty field`,
+  }),
+  email: Joi.string().required().messages({
+    "any.required": `"email" don't be upseeet`,
+    "string.empty": `"email" cannot be an empty field`,
+  }),
+  favorite: Joi.boolean().required().messages({
+    "any.required": `"favorite" don't be upseeet`,
+    "string.empty": `"favorite" cannot be an empty field`,
+  }),
 });
+
 
 const favoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
@@ -39,6 +60,7 @@ const getByIdReq = async (req, res, next) => {
     if (!byId) {
       throw HttpErrors(404, "Not found");
     }
+
     res.json(byId);
   } catch (error) {
     next(error);
@@ -86,6 +108,7 @@ const putReq = async (req, res, next) => {
     const result = await Contact.findByIdAndUpdate(contactId, req.body, {
       new: true,
     });
+
     if (!result) {
       throw HttpErrors(404, "Not found");
     }
